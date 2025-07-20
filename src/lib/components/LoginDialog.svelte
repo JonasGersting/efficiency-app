@@ -1,11 +1,7 @@
 <script lang="ts">
-    import { signInWithEmailAndPassword } from "firebase/auth";
+    import { signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
     import { auth } from "$lib/firebase";
-    let loginDialog: HTMLDialogElement;
-
-    export function showModal() {
-        loginDialog.showModal();
-    }
+    import { goto } from "$app/navigation";
 
     let mailInput: string = $state("");
     let passwordInput: string = $state("");
@@ -13,10 +9,14 @@
 
     function login() {
         signInWithEmailAndPassword(auth, mailInput, passwordInput)
-            .then((userCredential) => {
-                console.log("Login successful:", userCredential.user);
-                loginDialog.close();
-                emptyInputs();
+            .then(() => {
+                const unsubscribe = onAuthStateChanged(auth, (user) => {
+                    if (user) {
+                        unsubscribe();
+                        emptyInputs();
+                        goto("/home");
+                    }
+                });
             })
             .catch((error) => {
                 console.error("Login failed:", error);
@@ -27,9 +27,18 @@
         mailInput = "";
         passwordInput = "";
     }
+
+
+    function showLoginDialog() {
+        let loginDialog = document.getElementById(
+            "login-dialog",
+        ) as HTMLDialogElement;
+        loginDialog.showModal();
+    }
 </script>
 
-<dialog bind:this={loginDialog} class="modal modal-bottom sm:modal-middle">
+<button class="btn btn-warning flex-1" onclick={showLoginDialog}>Login</button>
+<dialog id="login-dialog" class="modal modal-bottom sm:modal-middle">
     <div class="modal-box flex flex-col items-center">
         <form
             method="dialog"

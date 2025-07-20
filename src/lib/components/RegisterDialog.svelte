@@ -1,15 +1,12 @@
 <script lang="ts">
     import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-    import { app } from "$lib/firebase"; // Ensure you have initialized Firebase in this file
-    import { auth } from "$lib/firebase"; // Import auth from your firebase setup
-    let loginDialog: HTMLDialogElement;
-
+    import { app } from "$lib/firebase";
+    import { auth } from "$lib/firebase";
     let mailInput = $state("");
     let passwordInput = $state("");
     let repeatPasswordInput = $state("");
     let errorMessage = $state("");
-    let { onRegisterSuccess } = $props<{ onRegisterSuccess: () => void }>();
-
+    let { showSuccess = $bindable(false) } = $props();
     const emptyInput = $derived(
         !mailInput || !passwordInput || !repeatPasswordInput,
     );
@@ -35,8 +32,7 @@
                 "Benutzer erfolgreich registriert:",
                 userCredential.user,
             );
-            loginDialog.close();
-            onRegisterSuccess();
+            handleRegisterSuccess();
             emptyInputs();
         } catch (error: any) {
             switch (error.code) {
@@ -65,12 +61,27 @@
         repeatPasswordInput = "";
     }
 
-    export function showModal() {
-        loginDialog.showModal();
+    function showRegisterDialog() {
+        let registerDialog = document.getElementById(
+            "register-dialog",
+        ) as HTMLDialogElement;
+        registerDialog.showModal();
+    }
+
+    function handleRegisterSuccess() {
+        showSuccess = true;
+        console.log(showSuccess, "showSuccess");
+
+        setTimeout(() => {
+            showSuccess = false;
+        }, 3000);
     }
 </script>
 
-<dialog bind:this={loginDialog} class="modal modal-bottom sm:modal-middle">
+<button class="btn btn-warning flex-1" onclick={showRegisterDialog}
+    >Register</button
+>
+<dialog id="register-dialog" class="modal modal-bottom sm:modal-middle">
     <div class="modal-box flex flex-col items-center">
         <form
             method="dialog"
@@ -109,3 +120,4 @@
         </form>
     </div>
 </dialog>
+
