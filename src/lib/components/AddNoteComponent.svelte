@@ -1,6 +1,6 @@
 <script lang="ts">
     import { db, user } from "$lib/firebase";
-    import { doc, setDoc, collection } from "firebase/firestore";
+    import { doc, setDoc, collection, increment } from "firebase/firestore";
 
     let noteTitle: string = $state("");
     let noteContent: string = $state("");
@@ -9,16 +9,21 @@
         if (!$user) {
             console.error("User not authenticated");
             return;
-            
         }
-        const newNoteRef = doc(collection(db, "notes"));
+        const newNoteRef = doc(collection(db, "users", $user.uid, "notes"));
+
+        const userDocRef = doc(db, "users", $user.uid);
+        await setDoc(newNoteRef, {
+            title: noteTitle,
+            content: noteContent,
+        });
+
         await setDoc(
-           newNoteRef,
+            userDocRef,
             {
-                title: noteTitle,
-                content: noteContent,
-                userId: $user.uid,
+                notesCreated: increment(1),
             },
+            { merge: true },
         );
         noteTitle = "";
         noteContent = "";
@@ -38,14 +43,31 @@
 </button>
 <dialog id="add-note-dialog" class="modal modal-bottom sm:modal-middle">
     <div class="modal-box flex flex-col items-center">
-        <h2 class="mb-32 text-3xl" >Add Note</h2>
-        <form method="dialog" class="w-80 flex flex-col items-center justify-center gap-4">
-            <input
-                bind:value={noteTitle}
-                type="text"
-                placeholder="Title"
-                class="input input-warning focus:outline-none"
-            />
+        <h2 class="mb-32 text-3xl">Add Note</h2>
+        <div class="w-80 flex flex-row items-center justify-center gap-4 mb-5">
+            <details class="dropdown btn-warning">
+                <summary class="btn m-1">Person</summary>
+                <ul
+                    class="menu dropdown-content bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm"
+                >
+                    <li>
+                        <button onclick={() => (noteTitle = "Jonas")}
+                            >Jonas</button
+                        >
+                    </li>
+                    <li>
+                        <button onclick={() => (noteTitle = "Julia")}
+                            >Julia</button
+                        >
+                    </li>
+                </ul>
+            </details>
+            <span class="w-full">{noteTitle === "Jonas" || noteTitle === "Julia" ? noteTitle : "Bitte Person wählen"}</span>
+        </div>
+        <form
+            method="dialog"
+            class="w-80 flex flex-col items-center justify-center gap-4"
+        >
             <textarea
                 bind:value={noteContent}
                 placeholder="Note"
