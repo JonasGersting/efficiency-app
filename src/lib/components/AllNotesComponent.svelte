@@ -13,6 +13,7 @@
         id: string;
         title: string;
         content: string;
+        deadline: string;
     }
 
     let notes: Note[] = $state([]);
@@ -24,9 +25,11 @@
             const unsubscribeNotes = onSnapshot(
                 notesCollection,
                 (querySnapshot) => {
-                    notes = querySnapshot.docs.map((doc) => {
-                        return { id: doc.id, ...doc.data() } as Note;
-                    });
+                    notes = querySnapshot.docs
+                        .map((doc) => {
+                            return { id: doc.id, ...doc.data() } as Note;
+                        })
+                        .sort((a, b) => a.deadline.localeCompare(b.deadline));
                 },
             );
             const userDocRef = doc(db, "users", $user.uid);
@@ -62,38 +65,57 @@
     });
 </script>
 
-{#if notesCreatedCount > 0}
-    <AnimatedComponent>
-        <progress
-            class="progress progress-accent w-56"
-            value={doneCount}
-            max={notesCreatedCount}
-        ></progress>
-        <p>{doneCount} / {notesCreatedCount} Notes done</p>
-    </AnimatedComponent>
-{/if}
-<div class="flex-1 overflow-y-auto p-4 w-full">
+<div class="w-full h-[50px]">
+    {#if notesCreatedCount > 0}
+        <AnimatedComponent>
+            <progress
+                class="progress progress-accent w-56"
+                value={doneCount}
+                max={notesCreatedCount}
+            ></progress>
+            <p>{doneCount} / {notesCreatedCount} Notes done</p>
+        </AnimatedComponent>
+    {/if}
+</div>
+<div class="flex-1 overflow-y-auto w-full">
     {#if notes.length > 0}
         <div
             class="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-4"
         >
             {#each notes as note (note.id)}
-                <div
-                    class="{note.title === 'Jonas'
-                        ? 'bg-blue-300'
-                        : note.title === 'Julia'
-                          ? 'bg-pink-300'
-                          : 'bg-orange-300'} p-4 rounded-lg shadow-md flex flex-col h-[230px] justify-between"
-                >
-                    <h3 class="font-bold text-lg mb-2">{note.title}</h3>
-                    <p class="text-gray-700 whitespace-pre-wrap overflow-auto">
-                        {note.content}
-                    </p>
-                    <button
-                        class="btn btn-danger"
-                        onclick={() => deleteNote(note.id)}>Done</button
+            <div>
+                 <AnimatedComponent>
+                    <div
+                        class="{note.title === 'Jonas'
+                            ? 'bg-blue-300'
+                            : note.title === 'Julia'
+                              ? 'bg-pink-300'
+                              : 'bg-orange-300'} p-4 rounded-lg shadow-md flex flex-col h-[230px] justify-center w-full"
                     >
-                </div>
+                        <div
+                            class="flex flex-col items-start justify-start flex-1 min-h-0"
+                        >
+                            <div
+                                class="w-full flex flex-row items-center justify-between mb-2"
+                            >
+                                <h3 class="font-bold text-lg">{note.title}</h3>
+                                <p class="text-m">
+                                    {note.deadline}
+                                </p>
+                            </div>
+                            <p
+                                class="text-gray-700 whitespace-pre-wrap overflow-auto w-full"
+                            >
+                                {note.content}
+                            </p>
+                        </div>
+                        <button
+                            class="btn btn-danger"
+                            onclick={() => deleteNote(note.id)}>Done</button
+                        >
+                    </div>
+                </AnimatedComponent>
+            </div>
             {/each}
         </div>
     {:else}

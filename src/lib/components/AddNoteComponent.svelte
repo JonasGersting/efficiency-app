@@ -4,6 +4,7 @@
 
     let noteTitle: string = $state("");
     let noteContent: string = $state("");
+    let noteDeadline: string = $state("");
 
     async function addNote() {
         if (!$user) {
@@ -16,6 +17,7 @@
         await setDoc(newNoteRef, {
             title: noteTitle,
             content: noteContent,
+            deadline: noteDeadline,
         });
 
         await setDoc(
@@ -27,6 +29,7 @@
         );
         noteTitle = "";
         noteContent = "";
+        noteDeadline = "";
     }
 
     function showAddNoteDialog() {
@@ -39,7 +42,7 @@
 
 <button class="btn btn-warning flex-1" onclick={showAddNoteDialog}>
     Add Note
-    <img class="w-[16px] h-[16px]" src="src\lib\img\add.png" alt="" />
+    <img class="w-[16px] h-[16px] ml-[8px]" src="src\lib\img\add.png" alt="" />
 </button>
 <dialog id="add-note-dialog" class="modal modal-bottom sm:modal-middle">
     <div class="modal-box flex flex-col items-center">
@@ -63,7 +66,15 @@
                     <option>Julia</option>
                 </select>
             </div>
-
+            <div class="w-full flex flex-row items-center justify-between gap-4 mb-5">
+                <span>Deadline</span>
+                <input
+                    required
+                    bind:value={noteDeadline}
+                    class="outline-none focus:outline-none"
+                    type="date"
+                />
+            </div>
             <textarea
                 required
                 bind:value={noteContent}
