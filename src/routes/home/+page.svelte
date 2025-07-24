@@ -30,8 +30,6 @@
     async function signOutUser() {
         try {
             await signOut(auth);
-            // Nachdem der Logout erfolgreich war, zur Startseite navigieren.
-            // Die Listener in AllNotesComponent werden durch die Änderung von $user automatisch bereinigt.
             goto("/");
         } catch (error) {
             console.error("Sign out error:", error);

@@ -14,10 +14,12 @@
         const newNoteRef = doc(collection(db, "users", $user.uid, "notes"));
 
         const userDocRef = doc(db, "users", $user.uid);
+        const dateParts = noteDeadline.split("-");
+        const formattedDeadline = `${dateParts[2]}.${dateParts[1]}.${dateParts[0]}`;
         await setDoc(newNoteRef, {
             title: noteTitle,
             content: noteContent,
-            deadline: noteDeadline,
+            deadline: formattedDeadline,
         });
 
         await setDoc(
@@ -66,7 +68,9 @@
                     <option>Julia</option>
                 </select>
             </div>
-            <div class="w-full flex flex-row items-center justify-between gap-4 mb-5">
+            <div
+                class="w-full flex flex-row items-center justify-between gap-4 mb-5"
+            >
                 <span>Deadline</span>
                 <input
                     required
