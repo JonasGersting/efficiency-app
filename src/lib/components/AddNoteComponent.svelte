@@ -1,6 +1,7 @@
 <script lang="ts">
     import { db, user } from "$lib/firebase";
     import { doc, setDoc, collection, increment } from "firebase/firestore";
+    import "cally";
 
     let noteTitle: string = $state("");
     let noteContent: string = $state("");
@@ -40,6 +41,23 @@
         ) as HTMLDialogElement;
         addNoteDialog.showModal();
     }
+
+    function handleDateChange(event: CustomEvent) {
+        const target = event.target as any;
+        noteDeadline = target._props.value;
+    }
+
+    function callyEvents(node: HTMLElement) {
+        const handleChange = (event: Event) => {
+            handleDateChange(event as CustomEvent);
+        };
+        node.addEventListener("change", handleChange);
+        return {
+            destroy() {
+                node.removeEventListener("change", handleChange);
+            },
+        };
+    }
 </script>
 
 <button class="btn btn-warning flex-1" onclick={showAddNoteDialog}>
@@ -72,12 +90,46 @@
                 class="w-full flex flex-row items-center justify-between gap-4 mb-5"
             >
                 <span>Deadline</span>
-                <input
-                    required
-                    bind:value={noteDeadline}
-                    class="outline-none focus:outline-none"
-                    type="date"
-                />
+                <button
+                    type="button"
+                    popovertarget="cally-popover1"
+                    class="input input-border focus:outline-none"
+                    id="cally1"
+                    style="anchor-name:--cally1"
+                >
+                    {noteDeadline || "Select Date"}
+                </button>
+                <div
+                    popover
+                    id="cally-popover1"
+                    class="dropdown bg-base-100 rounded-box shadow-lg"
+                    style="position-anchor:--cally1"
+                >
+                    <calendar-date
+                        value="2025-07-26"
+                        class="cally"
+                        use:callyEvents
+                    >
+                        <svg
+                            aria-label="Previous"
+                            class="fill-current size-4"
+                            slot="previous"
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24"
+                            ><path d="M15.75 19.5 8.25 12l7.5-7.5"></path></svg
+                        >
+                        <svg
+                            aria-label="Next"
+                            class="fill-current size-4"
+                            slot="next"
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24"
+                            ><path d="m8.25 4.5 7.5 7.5-7.5 7.5"></path></svg
+                        >
+                        <calendar-month></calendar-month>
+                    </calendar-date>
+                </div>
+              
             </div>
             <textarea
                 required
