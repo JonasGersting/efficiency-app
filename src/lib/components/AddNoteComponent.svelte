@@ -73,13 +73,13 @@
             onsubmit={addNote}
         >
             <div
-                class="w-80 flex flex-row items-center justify-center gap-4 mb-5"
+                class="w-80 flex flex-row items-center justify-between gap-4 mb-5"
             >
                 <span>Person</span>
                 <select
                     required
                     bind:value={noteTitle}
-                    class="select select-warning focus:outline-none cursor-pointer"
+                    class="select select-warning max-w-48 w-full focus:outline-none cursor-pointer"
                 >
                     <option selected>Beide</option>
                     <option>Jonas</option>
@@ -93,7 +93,7 @@
                 <button
                     type="button"
                     popovertarget="cally-popover1"
-                    class="input input-border focus:outline-none"
+                    class="select select-warning max-w-48 w-full focus:outline-none"
                     id="cally1"
                     style="anchor-name:--cally1"
                 >
@@ -105,31 +105,31 @@
                     class="dropdown bg-base-100 rounded-box shadow-lg"
                     style="position-anchor:--cally1"
                 >
-                    <calendar-date
-                        value="2025-07-26"
-                        class="cally"
-                        use:callyEvents
-                    >
-                        <svg
-                            aria-label="Previous"
-                            class="fill-current size-4"
-                            slot="previous"
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24"
-                            ><path d="M15.75 19.5 8.25 12l7.5-7.5"></path></svg
-                        >
-                        <svg
-                            aria-label="Next"
-                            class="fill-current size-4"
-                            slot="next"
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24"
-                            ><path d="m8.25 4.5 7.5 7.5-7.5 7.5"></path></svg
-                        >
+                    <calendar-date class="cally" use:callyEvents>
+                        <div slot="previous">
+                            <svg
+                                aria-label="Previous"
+                                class="fill-current size-4"
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 24 24"
+                                ><path d="M15.75 19.5 8.25 12l7.5-7.5"
+                                ></path></svg
+                            >
+                        </div>
+                        <div slot="next">
+                            <svg
+                                aria-label="Next"
+                                class="fill-current size-4"
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 24 24"
+                                ><path d="m8.25 4.5 7.5 7.5-7.5 7.5"
+                                ></path></svg
+                            >
+                        </div>
+
                         <calendar-month></calendar-month>
                     </calendar-date>
                 </div>
-              
             </div>
             <textarea
                 required

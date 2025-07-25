@@ -1,5 +1,8 @@
 <script lang="ts">
-    import { signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
+    import {
+        signInWithEmailAndPassword,
+        onAuthStateChanged,
+    } from "firebase/auth";
     import { auth } from "$lib/firebase";
     import { goto } from "$app/navigation";
 
@@ -10,8 +13,9 @@
     function login() {
         signInWithEmailAndPassword(auth, mailInput, passwordInput)
             .then(() => {
-                const unsubscribe = onAuthStateChanged(auth, (user) => {
+                const unsubscribe = onAuthStateChanged(auth, async (user) => {
                     if (user) {
+                        await createSession(user);
                         unsubscribe();
                         emptyInputs();
                         goto("/home");
@@ -23,11 +27,23 @@
             });
     }
 
+    async function createSession(user:any) {
+        console.log('session created');
+        
+        const idToken = await user.getIdToken();
+        const res = await fetch("/api/signin", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ idToken }),
+        });
+    }
+
     function emptyInputs() {
         mailInput = "";
         passwordInput = "";
     }
-
 
     function showLoginDialog() {
         let loginDialog = document.getElementById(
