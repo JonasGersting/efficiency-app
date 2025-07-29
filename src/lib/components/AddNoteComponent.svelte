@@ -65,7 +65,7 @@
 
 <button class="btn btn-warning flex-1" onclick={showAddNoteDialog}>
     Add Note
-    <img class="w-[16px] h-[16px] ml-[8px]" src="src\lib\img\add.png" alt="" />
+    <img class="w-[16px] h-[16px] ml-[8px]" src="src/lib/img/add.png" alt="" />
 </button>
 <dialog id="add-note-dialog" class="modal modal-bottom sm:modal-middle">
     <div class="modal-box flex flex-col items-center">
@@ -154,3 +154,11 @@
         </form>
     </div>
 </dialog>
+
+<style>
+    @media (max-width: 640px) {
+        #cally-popover1 {
+            transform: translateX(-26%);
+        }
+    }
+</style>
