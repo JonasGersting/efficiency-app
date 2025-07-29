@@ -9,18 +9,18 @@ export default defineConfig({
 		sveltekit(),
 		SvelteKitPWA({
 			 manifest: {
-                name: 'Deine App',
-                short_name: 'App',
-                description: 'Eine Beschreibung deiner App.',
+                name: 'Efficiency App',
+                short_name: 'Efficiency App',
+                description: 'A PWA for tracking your efficiency',
                 theme_color: '#000000',
                 icons: [
                     {
-                        src: 'static/icons/pwa_icon.png', // Pfad relativ zum `static` Ordner
+                        src: 'icons/pwa_icon.png', // Pfad relativ zum `static` Ordner
                         sizes: '192x192',
                         type: 'image/png'
                     },
                     {
-                        src: 'static/icons/pwa_icon.png',
+                        src: 'icons/pwa_icon.png',
                         sizes: '512x512',
                         type: 'image/png'
                     }
