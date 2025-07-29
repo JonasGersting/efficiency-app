@@ -8,24 +8,27 @@ export default defineConfig({
 		tailwindcss(),
 		sveltekit(),
 		SvelteKitPWA({
-			 manifest: {
-                name: 'Efficiency App',
-                short_name: 'Efficiency App',
-                description: 'A PWA for tracking your efficiency',
-                theme_color: '#000000',
-                icons: [
-                    {
-                        src: 'icons/pwa_icon.png', // Pfad relativ zum `static` Ordner
-                        sizes: '192x192',
-                        type: 'image/png'
-                    },
-                    {
-                        src: 'icons/pwa_icon.png',
-                        sizes: '512x512',
-                        type: 'image/png'
-                    }
-                ]
-            }
+			registerType: 'autoUpdate',
+			injectRegister: 'script',
+			outDir: '.svelte-kit/output/client', // <– wichtig!
+			manifest: {
+				name: 'Efficiency App',
+				short_name: 'Efficiency App',
+				description: 'A PWA for tracking your efficiency',
+				theme_color: '#000000',
+				icons: [
+					{
+						src: 'icons/pwa_icon.png', // Pfad relativ zum `static` Ordner
+						sizes: '192x192',
+						type: 'image/png'
+					},
+					{
+						src: 'icons/pwa_icon.png',
+						sizes: '512x512',
+						type: 'image/png'
+					}
+				]
+			}
 		})
 	]
 });
