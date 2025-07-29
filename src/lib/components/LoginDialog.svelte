@@ -27,9 +27,7 @@
             });
     }
 
-    async function createSession(user:any) {
-        console.log('session created');
-        
+    async function createSession(user:any) {    
         const idToken = await user.getIdToken();
         const res = await fetch("/api/signin", {
             method: "POST",

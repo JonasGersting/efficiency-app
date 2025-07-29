@@ -1,9 +1,12 @@
 <script lang="ts">
     import { db, user } from "$lib/firebase";
     import { doc, setDoc, collection, increment } from "firebase/firestore";
-    import "cally";
+    import { onMount } from "svelte";
 
-    let noteTitle: string = $state("");
+    onMount(() => {
+        import("cally");
+    });
+    let noteTitle: string = $state("Beide");
     let noteContent: string = $state("");
     let noteDeadline: string = $state("");
 
@@ -81,7 +84,7 @@
                     bind:value={noteTitle}
                     class="select select-warning max-w-48 w-full focus:outline-none cursor-pointer"
                 >
-                    <option selected>Beide</option>
+                    <option>Beide</option>
                     <option>Jonas</option>
                     <option>Julia</option>
                 </select>
@@ -93,7 +96,7 @@
                 <button
                     type="button"
                     popovertarget="cally-popover1"
-                    class="select select-warning max-w-48 w-full focus:outline-none"
+                    class="select select-warning max-w-48 w-full focus:outline-none cursor-pointer"
                     id="cally1"
                     style="anchor-name:--cally1"
                 >

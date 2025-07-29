@@ -40,7 +40,7 @@
 
 <AuthCheckComponent>
     <main
-        class="h-dvh w-full max-w-4xl flex flex-col items-center justify-center gap-4 p-4"
+        class="h-vh w-full max-w-4xl flex flex-col items-center justify-center gap-4 p-4"
     >
         <AnimatedComponent>
             {#if $user}
