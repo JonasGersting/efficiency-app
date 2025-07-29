@@ -2,6 +2,7 @@
     import { db, user } from "$lib/firebase";
     import { doc, setDoc, collection, increment } from "firebase/firestore";
     import { onMount } from "svelte";
+    import addIcon from "$lib/img/add.png"; 
 
     onMount(() => {
         import("cally");
@@ -65,7 +66,7 @@
 
 <button class="btn btn-warning flex-1" onclick={showAddNoteDialog}>
     Add Note
-    <img class="w-[16px] h-[16px] ml-[8px]" src="src/lib/img/add.png" alt="" />
+    <img class="w-[16px] h-[16px] ml-[8px]" src={addIcon} alt="Add Note" />
 </button>
 <dialog id="add-note-dialog" class="modal modal-bottom sm:modal-middle">
     <div class="modal-box flex flex-col items-center">
