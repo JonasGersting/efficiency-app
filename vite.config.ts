@@ -10,7 +10,7 @@ export default defineConfig({
 		SvelteKitPWA({
 			registerType: 'autoUpdate',
 			injectRegister: 'script',
-			outDir: '.svelte-kit/output/client', // <– wichtig!
+			outDir: 'static', // <<— das ist entscheidend!
 			manifest: {
 				name: 'Efficiency App',
 				short_name: 'Efficiency App',
