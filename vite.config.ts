@@ -1,10 +1,31 @@
 import { sveltekit } from '@sveltejs/kit/vite';
 import { defineConfig } from 'vite';
 import tailwindcss from '@tailwindcss/vite';
+import { SvelteKitPWA } from '@vite-pwa/sveltekit';
 
 export default defineConfig({
 	plugins: [
 		tailwindcss(),
-		sveltekit()
+		sveltekit(),
+		SvelteKitPWA({
+			 manifest: {
+                name: 'Deine App',
+                short_name: 'App',
+                description: 'Eine Beschreibung deiner App.',
+                theme_color: '#000000',
+                icons: [
+                    {
+                        src: 'static/icons/pwa_icon.png', // Pfad relativ zum `static` Ordner
+                        sizes: '192x192',
+                        type: 'image/png'
+                    },
+                    {
+                        src: 'static/icons/pwa_icon.png',
+                        sizes: '512x512',
+                        type: 'image/png'
+                    }
+                ]
+            }
+		})
 	]
 });
