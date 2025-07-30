@@ -1,0 +1,14 @@
+{
+  "name": "EFFICIENCY APP",
+  "description": "A productivity app to help you manage your tasks and time effectively.",
+  "display": "standalone",
+  "start_url": "/",
+  "icons": [
+    {
+      "src": "icons/pwa_icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
